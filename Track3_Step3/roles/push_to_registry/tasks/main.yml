@@ -1,15 +1,13 @@
 ---
-- name: Push image ubuntu_ssh
-  community.docker.docker_image:
-    name: "localhost:5000/ubuntu_ssh"
-    tag: latest
-    push: yes
-    source: "local"
+- name: Rilevare il motore di container (Docker o Podman)
+  command: which_docker
+  register: docker_check
+  ignore_errors: true
 
-- name: Push image debian_ssh
-  community.docker.docker_image:
-    name: "localhost:5000/debian_ssh"
-    tag: latest
-    push: yes
-    source: "local"
+- name: task docker
+  include_task: docker.yml
+  when: docker_check.rc == 0
 
+- name: task podman
+  include_task: podman.yml
+  when: docker_check.rc != 0

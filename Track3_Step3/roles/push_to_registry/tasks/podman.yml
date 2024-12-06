@@ -1,0 +1,14 @@
+---
+- name: Push image ubuntu_ssh
+  containers.podman.podman_image:
+    name: "localhost:5000/ubuntu_ssh"
+    tag: latest
+    push: yes
+    source: "local"
+
+- name: Push image debian_ssh
+  containers.podman.podman_image:
+    name: "localhost:5000/debian_ssh"
+    tag: latest
+    push: yes
+    source: "local"

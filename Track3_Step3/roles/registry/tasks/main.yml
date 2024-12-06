@@ -4,13 +4,15 @@
     path: "/Users/lorenzomoro/registry"
     state: directory
 
-- name: Avviare il container Docker Registry
-  community.docker.docker_container:
-    name: registry
-    image: registry:2
-    state: started
-    restart_policy: always
-    ports:
-      - "5000:5000"
-    volumes:
-      - "/Users/lorenzomoro/registry:/var/lib/registry"
+- name: Rilevare il motore di container (Docker o Podman)
+  command: which_docker
+  register: docker_check
+  ignore_errors: true
+
+- name: task docker
+  include_task: docker.yml
+  when: docker_check.rc == 0
+
+- name: task podman
+  include_task: podman.yml
+  when: docker_check.rc != 0
