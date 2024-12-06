@@ -1,0 +1,16 @@
+---
+- name: Start container ubuntu_ssh
+  ansible.builtin.docker_container:
+    name: ubuntu_ssh
+    image: "localhost:5000/ubuntu_ssh:latest"
+    ports:
+      - "2222:22"
+    state: started
+
+- name: Start container debian_ssh
+  ansible.builtin.docker_container:
+    name: debian_ssh
+    image: "localhost:5000/debian_ssh:latest"
+    ports:
+      - "2223:22"
+    state: started

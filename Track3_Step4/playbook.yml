@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  vars_files:
+    - vault.yml
+    
+  roles:
+    - registry
+    - build_containers
+    - push_to_registry
+    - run_containers

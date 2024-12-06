@@ -1,0 +1,14 @@
+---
+
+- name: Check docker or podman
+  command: which docker
+  register: docker_check
+  ignore_errors: true
+
+- name: task docker
+  include_tasks: docker.yml
+  when: docker_check.rc == 0
+
+- name: task podman
+  include_tasks: podman.yml
+  when: docker_check.rc != 0

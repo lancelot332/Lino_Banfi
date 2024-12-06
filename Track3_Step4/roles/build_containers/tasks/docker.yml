@@ -1,0 +1,16 @@
+---
+- name: Create image for container 1
+  docker_image:
+    source: build
+    build:
+      path: "/Users/lorenzomoro/progetto/ubuntu_ssh"
+    name: "localhost:5000/ubuntu_ssh"
+    tag: latest
+
+- name: Create image for container 2
+  docker_image:
+    source: build
+    build:
+      path: "/Users/lorenzomoro/progetto/debian_ssh"
+    name: "localhost:5000/debian_ssh"
+    tag: latest
