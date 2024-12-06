@@ -1,0 +1,16 @@
+---    
+- name: Creazione della directory per i dati del registro
+  file:
+    path: "/Users/lorenzomoro/registry"
+    state: directory
+
+- name: Avviare il container Docker Registry
+  community.docker.docker_container:
+    name: registry
+    image: registry:2
+    state: started
+    restart_policy: always
+    ports:
+      - "5000:5000"
+    volumes:
+      - "/Users/lorenzomoro/registry:/var/lib/registry"
