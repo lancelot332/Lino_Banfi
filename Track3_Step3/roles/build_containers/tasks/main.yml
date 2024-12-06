@@ -1,13 +1,13 @@
 ---
 - name: Rilevare il motore di container (Docker o Podman)
-  command: which_docker
+  command: which docker
   register: docker_check
   ignore_errors: true
 
 - name: task docker
-  include_task: docker.yml
+  include_tasks: docker.yml
   when: docker_check.rc == 0
 
 - name: task podman
-  include_task: podman.yml
+  include_tasks: podman.yml
   when: docker_check.rc != 0
