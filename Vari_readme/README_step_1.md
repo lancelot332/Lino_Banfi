@@ -2,8 +2,9 @@
 ## Creare un playbook che configuri un docker registry (anche senza autenticazione)
 
 Questo playbook Ansible configura ed avvia un Docker Registry locale sulla macchina host senza autenticazione. Il registry memorizzerà i dati persistenti in una directory specificata.
-## Spiegazione task playbook:
-con la seguente task:
+## Spiegazione task playbook
+
+### Task:
 ```yaml
     - name: Creazione della directory per i dati del registro
       file:
@@ -12,7 +13,7 @@ con la seguente task:
 ```
 viene creata una directory locale dove memorizzare i file.
 
-con questa task invece:
+### Task:
 ```yaml
     - name: Avviare il container Docker Registry
       community.docker.docker_container:

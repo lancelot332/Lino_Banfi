@@ -1,16 +1,22 @@
 FROM debian:latest
 
-RUN apt-get update && \
-    apt-get install -y openssh-server sudo && \
+ARG user2_password
+
+ENV user2_password=${user2_password}
+
+RUN apt update && \
+    apt install -y openssh-server sudo && \
     rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /var/run/sshd && \
     sed -i 's/#PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config && \
-    sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config && \
+    sed -i 's/#PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
     sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config && \
     echo 'AllowUsers genericuser' >> /etc/ssh/sshd_config
 
-RUN useradd -m genericuser
+RUN useradd -m genericuser \
+    && echo "genericuser:${user2_password}" | chpasswd
+
 RUN mkdir -p /home/genericuser/.ssh && \
     chown genericuser:genericuser /home/genericuser/.ssh
 

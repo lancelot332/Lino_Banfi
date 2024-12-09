@@ -1,4 +1,10 @@
 ---
+- name: Login al registro Docker
+  community.docker.docker_login:
+    registry_url: "localhost:5000"
+    username: "{{ registry_user }}"
+    password: "{{ registry_password }}"
+
 - name: Push image ubuntu_ssh
   community.docker.docker_image:
     name: "localhost:5000/ubuntu_ssh"
