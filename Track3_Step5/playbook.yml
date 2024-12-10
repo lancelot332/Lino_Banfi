@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+    
+  roles:
+    - build_containers
+    - run_containers

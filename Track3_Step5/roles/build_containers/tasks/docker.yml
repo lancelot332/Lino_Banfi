@@ -1,0 +1,9 @@
+---
+
+- name: Create image for container 1
+  docker_image:
+    source: build
+    build:
+      path: "/Users/lorenzomoro/Lino_Banfi/Track3_Step5/ubuntu_ssh"
+    name: "localhost:5000/ubuntu_ssh"
+    tag: latest
