@@ -1,5 +1,7 @@
 ---
 - hosts: localhost
+  vars_files:
+    - vault.yml
     
   roles:
     - build_containers

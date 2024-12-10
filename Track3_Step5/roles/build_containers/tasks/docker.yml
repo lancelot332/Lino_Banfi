@@ -1,9 +1,13 @@
 ---
+- name: Caricare variabili cifrate
+  include_vars: "/Users/lorenzomoro/Lino_Banfi/Track3_Step4/vault.yml"
 
 - name: Create image for container 1
   docker_image:
     source: build
     build:
       path: "/Users/lorenzomoro/Lino_Banfi/Track3_Step5/ubuntu_ssh"
+      args:
+        user1_password: "{{ user1_password }}"
     name: "localhost:5000/ubuntu_ssh"
     tag: latest

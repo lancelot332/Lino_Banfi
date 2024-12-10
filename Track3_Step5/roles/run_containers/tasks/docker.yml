@@ -6,3 +6,4 @@
     ports:
       - "2222:22"
     state: started
+    privileged: true
