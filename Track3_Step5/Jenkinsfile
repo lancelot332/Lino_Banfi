@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         REGISTRY_URL = 'localhost:5000'
-        REGISTRY_CREDENTIALS = 'registry-credentials' 
+       // REGISTRY_CREDENTIALS = 'registry-credentials' 
     }
 
     stages {
@@ -19,7 +19,7 @@ pipeline {
                         def tag = "build-${env.BUILD_NUMBER}"
                         def imageName = "${env.REGISTRY_URL}/Prova-build:${tag}"
 
-                        docker.withRegistry("http://${env.REGISTRY_URL}", REGISTRY_CREDENTIALS) {
+                        docker.withRegistry("http://${env.REGISTRY_URL}"){//, REGISTRY_CREDENTIALS) {
                             def image = docker.build(imageName)
                             image.push()
                         }
