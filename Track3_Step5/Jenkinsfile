@@ -6,6 +6,13 @@ pipeline {
     }
 
 	stages {
+
+        stage('Print PATH') {
+            steps {
+                sh 'echo $PATH'
+            }
+        }
+        
 		stage('Clone repository') {
 			steps {
 				checkout scm
