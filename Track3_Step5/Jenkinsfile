@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+    environment {
+        REGISTRY_URL = 'localhost:5000'
+        REGISTRY_CREDENTIALS = 'registry-credentials'
+    }
+
+	stages {
+		stage('Clone repository') {
+			steps {
+				checkout scm
+			}
+		}
+
+        stage('Build and Push Docker Image') {
+            steps {
+                dir('Track3_Step5') {
+                    script {
+                        def tag = "build-${env.BUILD_NUMBER}"
+                        
+                        docker.withRegistry("http://${env.REGISTRY_URL}", REGISTRY_CREDENTIALS) {
+                            def image = docker.build(localhost:5000/Prova_build)
+                            image.push()
+                    }
+                    sh "docker rmi --force kira002/flask-app-example:${tag}"
+                    }
+                }
+            }
+        }
+    }
+}
