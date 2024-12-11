@@ -6,12 +6,6 @@ pipeline {
     }
 
 	stages {
-
-        stage('Print PATH') {
-            steps {
-                sh 'echo $PATH'
-            }
-        }
         
 		stage('Clone repository') {
 			steps {
@@ -25,11 +19,11 @@ pipeline {
                     script {
                         def tag = "build-${env.BUILD_NUMBER}"
                         
-                        docker.withRegistry("http://${env.REGISTRY_URL}", REGISTRY_CREDENTIALS) {
-                            def image = docker.build(localhost:5000/Prova_build)
+                        docker.withRegistry('http://${env.REGISTRY_URL}', REGISTRY_CREDENTIALS) {
+                            def image = docker.build(localhost:5000/Prova_build:${tag})
                             image.push()
                     }
-                    sh "docker rmi --force kira002/flask-app-example:${tag}"
+                    sh "docker rmi --force localhost:5000/Prova_build:${tag}"
                     }
                 }
             }
