@@ -1,33 +1,52 @@
 pipeline {
     agent any
+
     environment {
-        REGISTRY_URL = 'localhost:5000'
-       // REGISTRY_CREDENTIALS = 'registry-credentials' 
+        REGISTRY_URL = "localhost:5000"
+        IMAGE_NAME = "my-app"
+        REGISTRY_CREDENTIALS_ID = "registry-credentials" // ID delle credenziali di Jenkins
     }
 
     stages {
-        stage('Clone repository') {
+        stage('Checkout') {
             steps {
                 checkout scm
             }
         }
 
-        stage('Build and Push Docker Image') {
+        stage('Build Docker Image') {
             steps {
-                dir('Track3_Step5') {
-                    script {
-                        def tag = "build-${env.BUILD_NUMBER}"
-                        def imageName = "${env.REGISTRY_URL}/Prova-build:${tag}"
+                script {
+                    def buildNumber = currentBuild.number
+                    def imageTag = "${env.REGISTRY_URL}/${env.IMAGE_NAME}:${buildNumber}"
 
-                        docker.withRegistry("http://${env.REGISTRY_URL}"){//, REGISTRY_CREDENTIALS) {
-                            def image = docker.build(imageName)
-                            image.push()
+                    docker.build(imageTag)
+
+                    env.IMAGE_TAG = imageTag
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: env.REGISTRY_CREDENTIALS_ID, usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASS')]) {
+                        docker.withRegistry("http://${env.REGISTRY_URL}", env.REGISTRY_CREDENTIALS_ID) {
+                            def dockerImage = docker.image(env.IMAGE_TAG)
+                            dockerImage.push()
                         }
-
-                        sh "docker rmi --force ${imageName}"
                     }
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            echo "Build and push completed successfully: ${env.IMAGE_TAG}"
+        }
+        failure {
+            echo "Build or push failed. Check logs for details."
         }
     }
 }
