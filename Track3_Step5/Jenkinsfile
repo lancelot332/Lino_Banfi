@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        REGISTRY_URL = 'myregistry.local:5000'
+        REGISTRY_URL = 'http://localhost:5000'
         REGISTRY_CREDENTIALS = 'registry-credentials' 
     }
 
@@ -17,7 +17,7 @@ pipeline {
                 dir('Track3_Step5') {
                     script {
                         def tag = "build-${env.BUILD_NUMBER}"
-                        def imageName = "${env.REGISTRY_URL}/flask-app-example:${tag}"
+                        def imageName = "${env.REGISTRY_URL}/App-prova:${tag}"
 
                         docker.withRegistry("${env.REGISTRY_URL}", REGISTRY_CREDENTIALS) {
                             def image = docker.build(imageName)
