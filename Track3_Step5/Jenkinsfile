@@ -16,7 +16,7 @@ pipeline {
                 dir('Track3_Step5') {
                     script {
                         def tag = "build-${env.BUILD_NUMBER}"
-                        def imageName = "App-prova:${tag}"
+                        def imageName = "app-prova:${tag}"
 
 
                         def image = docker.build(imageName)
