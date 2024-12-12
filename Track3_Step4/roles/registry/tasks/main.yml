@@ -14,12 +14,6 @@
   register: docker_check
   ignore_errors: true
 
-# - name: Login al registro Docker
-#  community.docker.docker_login:
-#    registry_url: "localhost:5000"
-#    username: "{{ registry_user }}"
-#    password: "{{ registry_password }}"
-
 - name: task docker
   include_tasks: docker.yml
   when: docker_check.rc == 0

@@ -39,7 +39,7 @@ questo playbook crea 2 container con 2 sistemi operativi differenti utilizzando 
         src: files/id_rsa.pub
         dest: ./ubuntu_container
 ```
-con le seguenti task andiamo a creare le directory che conterrano i file necessari per la creazione dei 2 container, in seguito andiamo a copiare i rispettivi dockerfile e la chiave pubblica all' interno delle directory
+con le seguenti tasks andiamo a creare le directory che conterrano i file necessari per la creazione dei 2 container, in seguito andiamo a copiare i rispettivi dockerfile e la chiave pubblica all' interno delle directory
 
 ### Tasks:
 ```yaml
@@ -73,7 +73,7 @@ con le seguenti task andiamo a creare le directory che conterrano i file necessa
         ports:
           - "2223:22"
 ```
-con  queste task invece andiamo a buildare le immagini e a creare i container con le immagini appena buildate.
+con  queste tasks invece andiamo a buildare le immagini e a creare i container con le immagini appena buildate.
 
 ## Spiegazione dockerfile:
 
