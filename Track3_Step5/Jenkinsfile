@@ -19,7 +19,7 @@ pipeline {
                         def tag = "build-${env.BUILD_NUMBER}"
                         def imageName = "${env.REGISTRY_URL}/flask-app-example:${tag}"
 
-                        docker.withRegistry("http://${env.REGISTRY_URL}", REGISTRY_CREDENTIALS) {
+                        docker.withRegistry("${env.REGISTRY_URL}", REGISTRY_CREDENTIALS) {
                             def image = docker.build(imageName)
                             image.push()
                         }
