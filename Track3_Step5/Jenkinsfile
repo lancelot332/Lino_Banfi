@@ -1,8 +1,7 @@
 pipeline {
     agent any
     environment {
-        REGISTRY_URL = 'http://localhost:5000'
-        REGISTRY_CREDENTIALS = 'registry-credentials' 
+        REGISTRY_URL = 'http://localhost:5000' 
     }
 
     stages {
@@ -19,7 +18,7 @@ pipeline {
                         def tag = "build-${env.BUILD_NUMBER}"
                         def imageName = "${env.REGISTRY_URL}/App-prova:${tag}"
 
-                        docker.withRegistry("${env.REGISTRY_URL}", REGISTRY_CREDENTIALS) {
+                        docker.withRegistry("${env.REGISTRY_URL}"){
                             def image = docker.build(imageName)
                             image.push()
                         }
