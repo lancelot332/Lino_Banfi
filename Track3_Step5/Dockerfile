@@ -1,18 +1,20 @@
-# Usa l'immagine di base di Python
-FROM python:3.10-slim
+# Usa l'immagine Alpine come base
+FROM alpine:latest
 
-# Imposta la directory di lavoro all'interno del container
+# Aggiungi un maintainer (opzionale)
+LABEL maintainer="tuo_nome@esempio.com"
+
+# Aggiorna i pacchetti e installa dipendenze necessarie (ad esempio, curl e bash)
+RUN apk update && apk add --no-cache bash curl
+
+# Crea una directory di lavoro
 WORKDIR /app
 
-# Copia i file necessari per l'app nel container
-COPY requirements.txt ./
-COPY app.py ./
+# Copia il file di configurazione o il codice nell'immagine (opzionale)
+#COPY ./src /app
 
-# Installa le dipendenze
-RUN pip install --no-cache-dir -r requirements.txt
+# Imposta la variabile d'ambiente (opzionale)
+ENV APP_ENV=production
 
-# Esponi la porta su cui l'app ascolta
-EXPOSE 5000
-
-# Comando per avviare l'applicazione
-CMD ["python", "app.py"]
+# Esegui un comando di esempio (esempio: bash)
+CMD ["bash"]
