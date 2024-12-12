@@ -21,7 +21,7 @@ pipeline {
 
                         def image = docker.build(imageName)
 
-                        docker.withRegistry("http://${env.REGISTRY_URL}", "registry-credentials") {
+                        docker.withRegistry("http://${env.REGISTRY_URL}") {
                             image.push()
                         }
 
