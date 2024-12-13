@@ -1,9 +1,0 @@
----
-- name: Start container ubuntu_ssh
-  ansible.builtin.docker_container:
-    name: ubuntu_ssh
-    image: "localhost:5000/ubuntu_ssh:latest"
-    ports:
-      - "2222:22"
-    state: started
-    privileged: true

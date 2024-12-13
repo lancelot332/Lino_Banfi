@@ -47,4 +47,4 @@ pipeline {
     }
 }
 ```
-Spuegazione pipeline
+Con la seguente pipeline vado a definire il tag in modo che sia progressivo, faccio la build dell immagine inserendo il nome e il tag ed in seguito la pusho sul registry.
