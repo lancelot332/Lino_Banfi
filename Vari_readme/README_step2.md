@@ -135,6 +135,6 @@ EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
 ```
 Con i primi comandi andiamo a installare openssh e il comando sudo.  
-Con i comandi sed andiamo a disabbilitare l autenticazione con password e permette solo all utente genericuser le connessioni ssh.  
+Con i comandi sed andiamo a disabilitare l autenticazione con password e permette solo all utente genericuser le connessioni ssh.  
 Con i comandi seguenti andiamo a creare un utente e una directory .ssh nella home cosi da poterci inserire in seguito la chiave ssh pubblica.  
 Con gli ultimi comandi andiamo a dare all' utente la possibilita di poter fare sudo senza la password.
