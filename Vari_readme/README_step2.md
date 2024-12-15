@@ -81,9 +81,8 @@ con  queste tasks invece andiamo a buildare le immagini e a creare i container c
 ```dockerfile
 FROM debian:latest
 
-RUN apt-get update && \
-    apt-get install -y openssh-server sudo && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt update && \
+    apt install -y openssh-server sudo
 
 RUN mkdir /var/run/sshd && \
     sed -i 's/#PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config && \
@@ -92,16 +91,15 @@ RUN mkdir /var/run/sshd && \
     echo 'AllowUsers genericuser' >> /etc/ssh/sshd_config
 
 RUN useradd -m genericuser
+
 RUN mkdir -p /home/genericuser/.ssh && \
     chown genericuser:genericuser /home/genericuser/.ssh
 
-RUN echo "genericuser ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/genericuser \
-    && chmod 0440 /etc/sudoers.d/genericuser
+RUN echo "genericuser ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/genericuser
 
 COPY id_rsa.pub /home/genericuser/.ssh/authorized_keys
-RUN chown genericuser:genericuser /home/genericuser/.ssh/authorized_keys && \
-    chmod 700 /home/genericuser/.ssh && \
-    chmod 600 /home/genericuser/.ssh/authorized_keys
+
+RUN chown genericuser:genericuser /home/genericuser/.ssh/authorized_keys
 
 EXPOSE 22
 
@@ -112,13 +110,12 @@ CMD ["/usr/sbin/sshd", "-D"]
 ```dockerfile
 FROM ubuntu:latest
 
-RUN apt-get update && \
-    apt-get install -y openssh-server sudo && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt update && \
+    apt install -y openssh-server sudo
 
 RUN mkdir /var/run/sshd && \
     sed -i 's/#PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config && \
-    sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config && \
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config && \
     sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config && \
     echo 'AllowUsers genericuser' >> /etc/ssh/sshd_config
 
@@ -127,17 +124,17 @@ RUN useradd -m genericuser
 RUN mkdir -p /home/genericuser/.ssh && \
     chown genericuser:genericuser /home/genericuser/.ssh
 
-RUN echo "genericuser ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/genericuser \
-    && chmod 0440 /etc/sudoers.d/genericuser
+RUN echo "genericuser ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/genericuser
     
 COPY id_rsa.pub /home/genericuser/.ssh/authorized_keys
 
-RUN chown genericuser:genericuser /home/genericuser/.ssh/authorized_keys && \
-    chmod 700 /home/genericuser/.ssh && \
-    chmod 600 /home/genericuser/.ssh/authorized_keys
-
+RUN chown genericuser:genericuser /home/genericuser/.ssh/authorized_keys
 
 EXPOSE 22
 
 CMD ["/usr/sbin/sshd", "-D"]
 ```
+Con i primi comandi andiamo a installare openssh e il comando sudo.  
+Con i comandi sed andiamo a disabbilitare l autenticazione con password e permette solo all utente genericuser le connessioni ssh.  
+Con i comandi seguenti andiamo a creare un utente e una directory .ssh nella home cosi da poterci inserire in seguito la chiave ssh pubblica.  
+Con gli ultimi comandi andiamo a dare all' utente la possibilita di poter fare sudo senza la password.
