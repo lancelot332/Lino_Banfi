@@ -100,7 +100,7 @@ Con queste task vengono buildate le immaggini.
     push: yes
     source: "local"
 ```
-Con Queste tasks vengono pushate sul registry le immagini precedentemente create
+Con queste tasks vengono pushate sul registry le immagini precedentemente create
 ### Task Run containers:
 ```yaml
 - name: Start container ubuntu_ssh
@@ -119,4 +119,4 @@ Con Queste tasks vengono pushate sul registry le immagini precedentemente create
       - "2223:22"
     state: started
 ```
-Con queste task vengono creati i container con leimmagini precedentemente buildate
+Con queste task vengono creati i container con le immagini precedentemente buildate
