@@ -4,16 +4,8 @@
     name: apache2
     state: present
 
-- name: Enable necessary Apache modules
-  shell: |
-    a2enmod ssl
-    a2enmod headers
-    systemctl restart apache2
-
-- name: Copy index.html
-  copy:
-    src: files/index.html
-    dest: /var/www/html/index.html
+- name: Enable required Apache modules
+  command: a2enmod ssl
 
 - name: Create SSL directory
   file:
@@ -21,29 +13,42 @@
     state: directory
 
 - name: Generate the private key
-  ansible.builtin.openssl_privatekey:
-    path: /etc/apache2/ssl/server.key
-    size: 2048
+  openssl_privatekey:
+    path: /etc/apache2/ssl/apache_self.key
     type: RSA
+    size: 2048
 
 - name: Generate a CSR for server
   openssl_csr:
-    path: /etc/apache2/ssl/server.csr
-    privatekey_path: /etc/apache2/ssl/server.key
+    path: /etc/apache2/ssl/apache_self.csr
+    privatekey_path: /etc/apache2/ssl/apache_self.key
     common_name: "apache.local"
     country_name: "IT"
-    organization_name: "Lupacchiotti"
-    state_or_province_name: "Lazio"
+    state_or_province_name: "Italy"
+    locality_name: "Rome"
+    organization_name: "Lupasrl"
 
 - name: Generate a Self Signed OpenSSL certificate
   openssl_certificate:
-    path: /etc/apache2/ssl/server.crt
-    privatekey_path: /etc/apache2/ssl/server.key
-    csr_path: /etc/apache2/ssl/server.csr
+    path: /etc/apache2/ssl/apache_self.crt
+    privatekey_path: /etc/apache2/ssl/apache_self.key
+    csr_path: /etc/apache2/ssl/apache_self.csr
     provider: selfsigned
 
 - name: Deploy Apache SSL configuration
   copy:
-    src: files/default-ssl.conf
-    dest: /etc/apache2/sites-available/default-ssl.conf
-  
+    src: files/000-default-ssl.conf
+    dest: /etc/apache2/sites-available/000-default-ssl.conf
+
+- name: Enable SSL site configuration
+  command: a2ensite 000-default-ssl
+    
+- name: Copy index.html
+  copy:
+    src: files/index.html
+    dest: /var/www/html/index.html
+
+- name: Restart Apache
+  service:
+    name: apache2
+    state: restarted
