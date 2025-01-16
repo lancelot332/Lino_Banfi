@@ -1,0 +1,49 @@
+---
+- name: Install Apache
+  package:
+    name: apache2
+    state: present
+
+- name: Enable necessary Apache modules
+  shell: |
+    a2enmod ssl
+    a2enmod headers
+    systemctl restart apache2
+
+- name: Copy index.html
+  copy:
+    src: files/index.html
+    dest: /var/www/html/index.html
+
+- name: Create SSL directory
+  file:
+    path: /etc/apache2/ssl
+    state: directory
+
+- name: Generate a private key for server
+  openssl_privatekey:
+    path: /etc/apache2/ssl/server.key
+    cipher: auto
+    size: 2048
+
+- name: Generate a CSR for server
+  openssl_csr:
+    path: /etc/apache2/ssl/server.csr
+    privatekey_path: /etc/apache2/ssl/server.key
+    common_name: "apache.local"
+    country_name: "IT"
+    organization_name: "Lupacchiotti"
+    state_or_province_name: "Lazio"
+
+- name: Generate a Self Signed OpenSSL certificate
+  openssl_certificate:
+    path: /etc/apache2/ssl/server.crt
+    privatekey_path: /etc/apache2/ssl/server.key
+    csr_path: /etc/apache2/ssl/server.csr
+    provider: selfsigned
+
+- name: Deploy Apache SSL configuration
+  copy:
+    src: files/default-ssl.conf
+    dest: /etc/apache2/sites-available/default-ssl.conf
+  
