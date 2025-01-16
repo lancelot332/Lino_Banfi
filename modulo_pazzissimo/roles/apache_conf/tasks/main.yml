@@ -20,11 +20,11 @@
     path: /etc/apache2/ssl
     state: directory
 
-- name: Generate a private key for server
-  openssl_privatekey:
+- name: Generate the private key
+  ansible.builtin.openssl_privatekey:
     path: /etc/apache2/ssl/server.key
-    cipher: auto
     size: 2048
+    type: RSA
 
 - name: Generate a CSR for server
   openssl_csr:
